@@ -12,7 +12,7 @@ public class AccelerometerData extends AbstractSensorData {
 	public BasicDBObject Process(JsonObject obj) {
 		x = obj.get("x").getAsDouble();
 		y = obj.get("y").getAsDouble();
-		z = obj.get("").getAsDouble();
+		z = obj.get("z").getAsDouble();
 		
 		BasicDBObject dbObj = new BasicDBObject("x", x)
 										.append("y", y)
