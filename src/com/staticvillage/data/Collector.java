@@ -77,7 +77,7 @@ public class Collector {
 	 * @param data
 	 */
 	public void add(String data){
-		if(!connected)
+		if(!connected || data == null || data.equals(""))
 			return;
 		
 		JsonArray dataArray	= new JsonParser().parse(data).getAsJsonArray();
