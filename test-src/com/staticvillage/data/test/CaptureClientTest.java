@@ -15,7 +15,6 @@ public class CaptureClientTest {
 			client.connect();
 			
 			for(int i=0;i<10;i++){
-				//pulling accelermoter from wrong prject fix
 				AccelerometerData a = new AccelerometerData();
 				a.x   		 = 12.345*i;
 				a.y			 = 1.2*i;
