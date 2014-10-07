@@ -15,6 +15,7 @@ public class CollectorService {
 			while(true){
 				System.out.println("waiting for clients...");
 				Socket client = server.accept();
+				client.setSoTimeout(3000);
 				System.out.println("launching a new connector");
 				CollectorRunner runner = new CollectorRunner(client);
 				

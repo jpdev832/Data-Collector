@@ -36,17 +36,12 @@ public class CollectorRunner implements Runnable {
 		while(!client.isClosed()){
 			try {
 				if(reader.ready()){
-					System.out.println("connected");
-					StringBuilder builder = new StringBuilder();
 					String in = null;
 					
 					while((in = reader.readLine()) != null){
-						builder.append(in);
+						System.out.println("json captured: "+in);
+						collector.add(in);
 					}
-					
-					String json = builder.toString();
-					System.out.println("json captured: "+json);
-					collector.add(json);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
