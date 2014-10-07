@@ -53,7 +53,9 @@ public class CaptureClient {
 		data.name = data.getName();
 		data.app_id = appId;
 		data.session_id = sessionId;
-		data.timestamp = format.format(new Date());
+		
+		if(data.timestamp == null)
+			data.timestamp = format.format(new Date());
 		
 		bufferObjs.add(data);
 		

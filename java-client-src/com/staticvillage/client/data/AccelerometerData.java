@@ -1,5 +1,6 @@
 package com.staticvillage.client.data;
 
+import com.google.gson.JsonObject;
 import com.staticvillage.client.data.AbstractSensorData;
 
 public class AccelerometerData extends AbstractSensorData {
@@ -14,6 +15,8 @@ public class AccelerometerData extends AbstractSensorData {
 	
 	@Override
 	public String toJson() {
+		JsonObject obj = new JsonObject();
+		
 		return null;
 	}
 }
