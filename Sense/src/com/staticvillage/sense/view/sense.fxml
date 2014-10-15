@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<TitledPane animated="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" text="Sense" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.staticvillage.sense.view.SenseController">
+  <content>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+         <children>
+            <LineChart fx:id="lineChart" layoutX="16.0" layoutY="121.0" prefHeight="258.0" prefWidth="564.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="100.0">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis side="LEFT" />
+              </yAxis>
+            </LineChart>
+            <Label layoutX="14.0" layoutY="14.0" text="Collection:" />
+            <ChoiceBox fx:id="lstAppId" layoutX="371.0" layoutY="9.0" onMouseClicked="#onAppIdSelected" prefWidth="150.0" />
+            <ChoiceBox fx:id="lstSessionId" layoutX="371.0" layoutY="35.0" onMouseClicked="#onSessionIdSelected" prefWidth="150.0" />
+            <ChoiceBox fx:id="lstTimestamp" layoutX="371.0" layoutY="61.0" onMouseClicked="#onTimestampSelected" prefWidth="150.0" />
+            <Label layoutX="265.0" layoutY="14.0" text="App Id:" />
+            <Label layoutX="265.0" layoutY="40.0" text="Session Id:" />
+            <Label layoutX="265.0" layoutY="66.0" text="Timestamp:" />
+            <Button fx:id="btnRetrieve" layoutX="113.0" layoutY="61.0" mnemonicParsing="false" onMouseClicked="#onRetieveClicked" text="Retrieve" />
+            <Button fx:id="btnClear" layoutX="182.0" layoutY="61.0" mnemonicParsing="false" onMouseClicked="#onClearClicked" text="Clear" />
+            <ChoiceBox fx:id="lstCollections" layoutX="82.0" layoutY="9.0" onMouseClicked="#onCollectionClicked" prefWidth="150.0" />
+         </children></AnchorPane>
+  </content>
+</TitledPane>

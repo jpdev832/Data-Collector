@@ -3,6 +3,8 @@ package com.staticvillage.android.log;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+import org.json.JSONException;
+
 import com.staticvillage.android.data.AbstractSensorData;
 import com.staticvillage.android.data.CaptureClient;
 
@@ -69,7 +71,7 @@ public class SensorLogger implements SensorEventListener {
 			client.connect(host, port);
 	}
 	
-	public void stop(SensorType sensorType){		
+	public void stop(){		
 		try {
 			client.close();
 		} catch (IOException e) {
@@ -123,7 +125,7 @@ public class SensorLogger implements SensorEventListener {
 		
 		switch(sensorType){
 		case Sensor.TYPE_ACCELEROMETER:
-			className = AbstractSensorData.PACKAGE+".AcceleromterData";
+			className = AbstractSensorData.PACKAGE+".AccelerometerData";
 			break;
 		case Sensor.TYPE_PRESSURE:
 			className = AbstractSensorData.PACKAGE+".AirPressureData";
@@ -179,6 +181,8 @@ public class SensorLogger implements SensorEventListener {
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 	}

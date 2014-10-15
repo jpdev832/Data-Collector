@@ -2,6 +2,7 @@ package com.staticvillage.data;
 
 import com.google.gson.JsonObject;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 
 public class GravityData extends AbstractSensorData {
 	public double x;
@@ -19,5 +20,11 @@ public class GravityData extends AbstractSensorData {
 										.append("z", z);
 		
 		return dbObj;
+	}
+
+	@Override
+	public AbstractSensorData initFromDBObject(DBObject object) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

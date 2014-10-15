@@ -13,6 +13,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -65,6 +66,11 @@ public class AutoActivity extends Activity implements OnItemClickListener, OnCli
 	}
 
 	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
@@ -80,21 +86,27 @@ public class AutoActivity extends Activity implements OnItemClickListener, OnCli
 				break;
 			case 1:
 				Toast.makeText(this, "Air Pressure Clicked", Toast.LENGTH_SHORT).show();
+				logger.addSensor(SensorType.AIR_PRESSURE);
 				break;
 			case 2:
 				Toast.makeText(this, "Gravity Clicked", Toast.LENGTH_SHORT).show();
+				logger.addSensor(SensorType.GRAVITY);
 				break;
 			case 3:
 				Toast.makeText(this, "Gyroscope", Toast.LENGTH_SHORT).show();
+				logger.addSensor(SensorType.GYROSCOPE);
 				break;
 			case 4:
 				Toast.makeText(this, "Light", Toast.LENGTH_SHORT).show();
+				logger.addSensor(SensorType.LIGHT);
 				break;
 			case 5:
 				Toast.makeText(this, "Magnetic Field", Toast.LENGTH_SHORT).show();
+				logger.addSensor(SensorType.MAGNETIC_FIELD);
 				break;
 			case 6:
 				Toast.makeText(this, "Proximity", Toast.LENGTH_SHORT).show();
+				logger.addSensor(SensorType.PROXIMITY);
 				break;
 			default:
 				break;

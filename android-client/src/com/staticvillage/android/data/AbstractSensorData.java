@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import android.hardware.SensorEvent;
 
 public abstract class AbstractSensorData {
-	public static final String PACKAGE = "com.staticvillage.data";
+	public static final String PACKAGE = "com.staticvillage.android.data";
 	
 	public String name;
 	public String app_id;

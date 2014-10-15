@@ -2,6 +2,7 @@ package com.staticvillage.data;
 
 import com.google.gson.JsonObject;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 
 public class TemperatureData extends AbstractSensorData {
 	public double celsius;
@@ -12,5 +13,11 @@ public class TemperatureData extends AbstractSensorData {
 		
 		BasicDBObject dbObj = new BasicDBObject("celsius", celsius);
 		return dbObj;
+	}
+
+	@Override
+	public AbstractSensorData initFromDBObject(DBObject object) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
