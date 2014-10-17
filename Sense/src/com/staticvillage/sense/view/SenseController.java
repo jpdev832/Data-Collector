@@ -1,7 +1,10 @@
 package com.staticvillage.sense.view;
 
+import java.lang.reflect.Field;
 import java.net.UnknownHostException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import com.mongodb.BasicDBObject;
 import com.staticvillage.data.AbstractSensorData;
@@ -18,12 +21,26 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 
 public class SenseController {
+	private String[] collections = new String[]{
+		"AccelerometerData",
+		"AirPressureData",
+		"GravityData",
+		"GyroscopeData",
+		"LightData",
+		"MagneticFieldData",
+		"OrientationData",
+		"ProximityData",
+		"TemperatureData"
+	};
+	
 	private ObservableList<String> obsCollection;
 	private ObservableList<String> obsAppId;
 	private ObservableList<String> obsSessionId;
 	private ObservableList<String> obsTimestamp;
 	
-	private ObservableList<XYChart.Series<String, Double>> obsAccels;
+	private ObservableList<XYChart.Series<String, Double>> obsSeriesData;
+	
+	private Class<?> cls;
 	
     @FXML
     private Button btnRetrieve;
@@ -52,16 +69,16 @@ public class SenseController {
     	obsAppId = FXCollections.observableArrayList();
     	obsSessionId = FXCollections.observableArrayList();
     	obsTimestamp = FXCollections.observableArrayList();
-    	obsAccels = FXCollections.observableArrayList();
+    	obsSeriesData = FXCollections.observableArrayList();
 
-        try {
-        	Retriever retriever = new Retriever();
+        //try {
+        	/*Retriever retriever = new Retriever();
 			retriever.init();
 			
 			String[] colls = retriever.getCollections();
-			retriever.close();
+			retriever.close();*/
 	        
-	        for(String c :colls){
+	        for(String c :collections){
 	        	obsCollection.add(c);
 	        }
 	        
@@ -70,10 +87,12 @@ public class SenseController {
 	        lstSessionId.setItems(obsSessionId);
 	        lstTimestamp.setItems(obsTimestamp);
 	        
-	        lineChart.setData(obsAccels);
-		} catch (UnknownHostException e) {
+	        lineChart.setData(obsSeriesData);
+	        
+	        lstCollections.getSelectionModel().selectFirst();
+		/*} catch (UnknownHostException e) {
 			e.printStackTrace();
-		}
+		}*/
     }
 
     @FXML
@@ -93,7 +112,7 @@ public class SenseController {
 
     @FXML
     void onRetieveClicked() {
-    	obsAccels.clear();
+    	obsSeriesData.clear();
     	
     	String col = lstCollections.getSelectionModel().getSelectedItem();
     	String appId = lstAppId.getSelectionModel().getSelectedItem();
@@ -106,32 +125,49 @@ public class SenseController {
         	Retriever retriever = new Retriever();
 			retriever.init();
 			
-			List<AbstractSensorData> ret = retriever.retrieve(col, dbObj, new AccelerometerData());
+			List<AbstractSensorData> ret = retriever.retrieve(col, dbObj, (AbstractSensorData)cls.newInstance());
 			retriever.close();
 			
-			Series<String, Double> x = new Series<String, Double>();
-		    Series<String, Double> y = new Series<String, Double>();
-		    Series<String, Double> z = new Series<String, Double>();
-		    x.setName("X");
-		    y.setName("Y");
-		    z.setName("Z");
+			Field[] fields = cls.getDeclaredFields();
+			HashMap<String, Series<String, Double>> map = new HashMap<String, XYChart.Series<String,Double>>();
+			
+			for(Field field : fields){
+				if(AbstractSensorData.isBaseProperty(field.getName()))
+					continue;
+				
+				Series<String, Double> a = new Series<String, Double>();
+				a.setName(field.getName());
+				map.put(field.getName(), a);
+			}
 	        
 	        for(AbstractSensorData a : ret){
-	        	AccelerometerData ac = (AccelerometerData)a;
-	        	x.getData().add(new XYChart.Data<String, Double>(ac.timestamp, ac.x));
-	        	y.getData().add(new XYChart.Data<String, Double>(ac.timestamp, ac.y));
-	        	z.getData().add(new XYChart.Data<String, Double>(ac.timestamp, ac.z));
+	        	for(Entry<String, Series<String, Double>> entry : map.entrySet()){
+	        		Series<String, Double> v = entry.getValue();
+	        		Field f =  cls.getDeclaredField(entry.getKey());
+	        		
+	        		v.getData().add(new XYChart.Data<String, Double>(a.timestamp, f.getDouble(cls.cast(a))));
+	        	}
 	        }
 	        
-	        obsAccels.addAll(x, y, z);
+	        obsSeriesData.addAll(map.values());
 		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
 			e.printStackTrace();
 		}
     }
 
     @FXML
     void onClearClicked() {
-    	obsAccels.clear();
+    	obsSeriesData.clear();
     }
 
     @FXML
@@ -165,7 +201,11 @@ public class SenseController {
 	        //for(String s : Timestamps){
 	        	//obsTimestamp.add(s);
 	        //}
+	        
+	        cls = Class.forName(AbstractSensorData.PACKAGE+"."+item);
 		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
     }
